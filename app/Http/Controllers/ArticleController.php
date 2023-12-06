@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Article\CreateArticleRequest;
+use App\Http\Requests\Article\DeleteArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
 
 class ArticleController extends Controller
@@ -65,13 +66,21 @@ class ArticleController extends Controller
 
         if ($article->update($request->validated()))
         {
-            dd('ok');
-        }
-        else
-        {
-            dd('pas ok');
+            return response()->json($article, Response::HTTP_OK);
         }
 
-        return response()->json($article, Response::HTTP_OK);
+        return response()->json("Impossible d'éditer la ressource !", Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function delete (DeleteArticleRequest $request, $slug): JsonResponse
+    {
+        $article = Article::find($this->getId($slug));
+
+        if ($article->delete())
+        {
+            return response()->json([], Response::HTTP_OK);
+        }
+
+        return response()->json("Impossible de supprimer la ressource !", Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

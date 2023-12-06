@@ -14,7 +14,7 @@ class ArticlesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Article::factory()->count(53)->create();
+        Article::factory()->count(3000)->create();
 
         /**
          * Essai d'un multiple-enregistrement pour la relation 'hasMany'
