@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Article;
 
 use Exception;
+use App\Traits\SlugTrait;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +13,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateArticleRequest extends FormRequest
 {
+    use SlugTrait;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -33,9 +36,13 @@ class UpdateArticleRequest extends FormRequest
 
         unset($data['body']);
 
+        if (!isset($data['image'])) unset($data['image']);
+
+        $id = intval($this->getId($this->route()->slug));
+
         $this->replace([
             ...(array) $body,
-            ...(array) ['id' => intval($this->route()->id)],
+            ...(array) ['id' => $id],
             ...(array) $data
         ]);
     }
@@ -56,7 +63,7 @@ class UpdateArticleRequest extends FormRequest
                 'nullable',
                 'string',
                 'between:8,64',
-                Rule::unique('articles')->ignore($this->route()->id)
+                Rule::unique('articles')->ignore($this->getId($this->route()->slug))
             ],
             'content_raw' => [
                 'nullable'

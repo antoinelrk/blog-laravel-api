@@ -118,6 +118,11 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'requestslog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/requests.log')
+        ],
+
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\Article\CreateArticleRequest;
 use App\Http\Requests\Article\DeleteArticleRequest;
 use App\Http\Requests\Article\UpdateArticleRequest;
+use Illuminate\Support\Facades\Log;
 
 class ArticleController extends Controller
 {
@@ -54,9 +55,9 @@ class ArticleController extends Controller
         return response()->json(null, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    public function update (UpdateArticleRequest $request, int $id): JsonResponse
+    public function update (UpdateArticleRequest $request, string $slug): JsonResponse
     {
-        $article = Article::find($id);
+        $article = Article::find($this->getId($slug));
 
         if ($request->file('image') && $article->image_path)
         {
@@ -64,8 +65,9 @@ class ArticleController extends Controller
             $article->image_path = $request->file('image')->store('articles', 'public');
         }
 
-        if ($article->update($request->validated()))
+        if ($article = tap($article)->update($request->validated()))
         {
+            Log::channel('requestslog')->info($request->validated());
             return response()->json($article, Response::HTTP_OK);
         }
 
