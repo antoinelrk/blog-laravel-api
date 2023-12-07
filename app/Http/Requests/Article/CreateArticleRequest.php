@@ -8,6 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Log;
 
 class CreateArticleRequest extends FormRequest
 {
@@ -17,17 +18,6 @@ class CreateArticleRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
-    }
-
-    /**
-     * On setup les données pour la validation
-     */
-    protected function prepareForValidation(): void
-    {
-        $data = $this->all();
-        $body = (array) json_decode($data['body']);
-        unset($data['body']);
-        $this->replace([...(array) $body, ...(array) $data]);
     }
 
     /**

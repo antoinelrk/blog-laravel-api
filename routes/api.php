@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,8 @@ Route::name('articles.')->prefix('articles')->group(function () {
     Route::post('/', [ArticleController::class, 'create']);
     Route::patch('/{slug}', [ArticleController::class, 'update'])->where('slug', "^[0-9]+(?:-[a-zA-Z0-9]+)*$");
     Route::delete('/{slug}', [ArticleController::class, 'delete'])->where('slug', "^[0-9]+(?:-[a-zA-Z0-9]+)*$");
+});
+
+Route::name('categories.')->prefix('categories')->group(function () {
+    Route::get('/{excludedId?}', [CategoryController::class, 'list'])->where('excludedId', "^[0-9]+$");
 });
