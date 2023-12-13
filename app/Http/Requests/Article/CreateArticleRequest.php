@@ -3,12 +3,11 @@
 namespace App\Http\Requests\Article;
 
 use Exception;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class CreateArticleRequest extends FormRequest
 {
@@ -31,36 +30,33 @@ class CreateArticleRequest extends FormRequest
             'title' => [
                 'required',
                 'string',
-                'between:8,64'
+                'between:8,64',
             ],
             'content_raw' => [
-                'required'
+                'required',
             ],
             'category_id' => [
                 'required',
                 'integer',
-                Rule::exists('categories', 'id')
+                Rule::exists('categories', 'id'),
             ],
             'image' => [
                 'required',
-                'image'
+                'image',
             ],
             'is_visible' => [
                 'nullable',
-                'boolean'
-            ]
+                'boolean',
+            ],
         ];
     }
 
-    /**
-     * @return Exception
-     */
     protected function failedValidation(Validator $validator): Exception
     {
         $response = response()->json([
             'success' => false,
-            'message' => "Validation errors",
-            'errors' => $validator->errors()
+            'message' => 'Validation errors',
+            'errors' => $validator->errors(),
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         throw new HttpResponseException($response);

@@ -2,7 +2,8 @@
 
 namespace App\Traits;
 
-trait SlugTrait {
+trait SlugTrait
+{
     public function getId(string $value): int
     {
         return explode('-', $value)[0];

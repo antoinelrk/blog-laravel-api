@@ -120,7 +120,7 @@ return [
 
         'requestslog' => [
             'driver' => 'single',
-            'path' => storage_path('logs/requests.log')
+            'path' => storage_path('logs/requests.log'),
         ],
 
         'null' => [

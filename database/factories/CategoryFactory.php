@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => strtoupper($this->faker->domainWord())
+            'name' => strtoupper($this->faker->domainWord()),
         ];
     }
 }

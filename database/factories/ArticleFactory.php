@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,7 +24,7 @@ class ArticleFactory extends Factory
             'is_visible' => $this->faker->boolean(50),
             'image_path' => $this->faker->imageUrl(),
             'category_id' => Category::inRandomOrder()->first()->id,
-            'user_id' => User::inRandomOrder()->first()->id
+            'user_id' => User::inRandomOrder()->first()->id,
         ];
     }
 }

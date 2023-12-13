@@ -2,17 +2,18 @@
 
 namespace App\Http\Requests\Article;
 
-use Exception;
 use App\Traits\SlugTrait;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
+use Exception;
 use Illuminate\Contracts\Validation\Validator;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class DeleteArticleRequest extends FormRequest
 {
     use SlugTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,7 +25,7 @@ class DeleteArticleRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $id = intval($this->getId($this->route()->slug));
-        $this->merge([ 'id' => $id ]);
+        $this->merge(['id' => $id]);
     }
 
     /**
@@ -38,8 +39,8 @@ class DeleteArticleRequest extends FormRequest
             'id' => [
                 'required',
                 'numeric',
-                Rule::exists('articles', 'id')
-            ]
+                Rule::exists('articles', 'id'),
+            ],
         ];
     }
 
@@ -47,8 +48,8 @@ class DeleteArticleRequest extends FormRequest
     {
         $response = response()->json([
             'success' => false,
-            'message' => "Validation errors",
-            'errors' => $validator->errors()
+            'message' => 'Validation errors',
+            'errors' => $validator->errors(),
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         throw new HttpResponseException($response);
